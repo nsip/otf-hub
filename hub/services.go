@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/digisan/gotk/io"
+	fd "github.com/digisan/gotk/filedir"
 	proc "github.com/digisan/gotk/process"
 	"github.com/digisan/gotk/slice/ti"
 )
@@ -98,7 +98,7 @@ func loadSvrTable(svrTblFile, varDefFile string) {
 		)
 
 		if exe != "" {
-			exePath, err := io.AbsPath(exe, true) // validate each executable
+			exePath, err := fd.AbsPath(exe, true) // validate each executable
 			failOnErr("%v", err)
 			qExePath = append(qExePath, exePath) // same executable could be invoked multiple times // ts.MkSet(append(qSvrExePath, exePath)...)
 			qExeArgs = append(qExeArgs, args)

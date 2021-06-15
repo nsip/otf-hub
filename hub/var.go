@@ -6,10 +6,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cdutwhu/debog/fn"
 	"github.com/cdutwhu/gotil/net"
 	"github.com/digisan/gotk/env"
 	"github.com/digisan/gotk/io"
+	lk "github.com/digisan/logkit"
 )
 
 var (
@@ -24,12 +24,12 @@ var (
 	sSplitN       = strings.SplitN
 	sHasPrefix    = strings.HasPrefix
 	sHasSuffix    = strings.HasSuffix
-	failOnErr     = fn.FailOnErr
-	failOnErrWhen = fn.FailOnErrWhen
-	warnOnErr     = fn.WarnOnErr
-	info          = fn.Logger
-	l2c           = fn.EnableLog2C
-	l2f           = fn.EnableLog2F
+	failOnErr     = lk.FailOnErr
+	failOnErrWhen = lk.FailOnErrWhen
+	warnOnErr     = lk.WarnOnErr
+	info          = lk.Log
+	l2c           = lk.Log2C
+	l2f           = lk.Log2F
 	scanLine      = io.FileLineScan
 	scanStrLine   = io.StrLineScan
 	urlParamStr   = net.URLParamStr

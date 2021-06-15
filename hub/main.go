@@ -41,7 +41,7 @@ func main() {
 	failOnErr("%v", one.Lock())
 	defer func() {
 		failOnErr("%v", one.Unlock())
-		fPln("Hub Exits")
+		fPln("Hub Exited")
 	}()
 
 	// "quit", "exit" to exit hub
