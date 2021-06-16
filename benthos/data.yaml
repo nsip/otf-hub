@@ -49,6 +49,8 @@ processor_resources:
       request_map: |
         root = if meta.providerName != "BrightPath" || original.score.type() == "null" {
           deleted()
+        } else {
+          this
         }
       processors:
         - bloblang: |
@@ -62,6 +64,8 @@ processor_resources:
       request_map: |
         root = if meta.providerName != "BrightPath" || original.score.type() == "null" {
           deleted()
+        } else {
+          this
         }
       processors:
         - bloblang: |
@@ -88,6 +92,8 @@ processor_resources:
       request_map: |
         root = if meta.providerName != "BrightPath" {
           deleted()
+        } else {
+          this
         }
       processors: 
         - bloblang: |
@@ -102,6 +108,8 @@ processor_resources:
       request_map: |
         root = if otf.align.alignments == null {
           deleted()
+        } else {
+          this
         }
       processors:
         - bloblang: |
@@ -117,6 +125,8 @@ processor_resources:
       request_map: |
         root = if meta.providerName != "BrightPath" || otf.align.alignments == null {
           deleted()
+        } else {
+          this
         }
       processors: 
         - bloblang: |
@@ -146,6 +156,8 @@ processor_resources:
       request_map: |
         root = if meta.providerName != "MathsPathway" {
           deleted()
+        } else {
+          this
         }
       processors:
         - bloblang: |
@@ -172,6 +184,8 @@ processor_resources:
       request_map: |
         root = if meta.providerName != "MathsPathway" {
           deleted()
+        } else {
+          this
         }
       processors:
         - bloblang: |
@@ -185,6 +199,8 @@ processor_resources:
       request_map: |
         root = if meta.providerName != "MathsPathway" {
           deleted()
+        } else {
+          this
         }
       processors:
         - bloblang: |
@@ -212,6 +228,8 @@ processor_resources:
       request_map: |
         root = if !this.exists("otf.level.calculatedScore.scaledScore") {
           deleted()
+        } else {
+          this
         }
       processors:
         - bloblang: |

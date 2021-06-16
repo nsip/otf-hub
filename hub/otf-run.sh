@@ -25,7 +25,7 @@ OTF_CLASSIFIER=$OTF_ROOT/otf-classifier/build/Linux64/otf-classifier/otf-classif
 OTF_ALIGN=$OTF_ROOT/otf-align/cmd/otf-align/otf-align
 OTF_LEVEL=$OTF_ROOT/otf-level/cmd/otf-level/otf-level
 OTF_TESTDATA=$OTF_ROOT/otf-testdata
-BENTHOS=~/Desktop/OTF/benthos3460/benthos
+BENTHOS=~/Desktop/OTF/benthos3461/benthos
 ###
 
 # create demo input/audit/nats folder structure
