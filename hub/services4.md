@@ -1,0 +1,15 @@
+|  NO   | SERVICE       | EXECUTABLE PATH                                                               | ARGUMENTS                                                                     | DELAY | ENABLED |
+| :---: | :------------ | :---------------------------------------------------------------------------- | :---------------------------------------------------------------------------- | :---: | :-----: |
+|   1   | NatsStreaming | ~/Desktop/OTF/nats-streaming-server-v0.22.0-linux-amd64/nats-streaming-server |                                                                               | 0,10  |  true   |
+|   2   | Nias3         | ~/Desktop/OTF/n3-web/server/n3w/n3w                                           |                                                                               |  1,2  |  true   |
+|   3   | Benthos       | ~/Desktop/OTF/benthos3480/benthos                                             | -c ~/Desktop/OTF/otf-hub/benthos/maps/align.yaml                              |   3   |  true   |
+|   4   | Align         | ~/Desktop/OTF/otf-align/cmd/otf-align/otf-align                               | --port=1324                                                                   |   2   |  true   |
+|   5   | TxtClassifier | ~/Desktop/OTF/otf-classifier/build/Linux64/otf-classifier/otf-classifier      |                                                                               |   2   |  true   |
+|   6   | Level         | ~/Desktop/OTF/otf-level/cmd/otf-level/otf-level                               | --port=1327                                                                   |   2   |  true   |
+|   7   | Weight        | ~/Desktop/OTF/otf-weighting/otf-weighting                                     |                                                                               |   2   |  true   |
+|   8   | Benthos       | ~/Desktop/OTF/benthos3480/benthos                                             | -c ~/Desktop/OTF/otf-hub/benthos/maps/level.yaml                              |   3   |  true   |
+|   9   | Reader        | ~/Desktop/OTF/otf-reader/cmd/otf-reader/otf-reader                            | --folder=~/Desktop/OTF/otf-hub/in/maths-pathway --config=./mp_config.json     |   2   |  true   |
+|  10   | Benthos       | ~/Desktop/OTF/benthos3480/benthos                                             | -c ~/Desktop/OTF/otf-hub/benthos/data.yaml                                    |   3   |  true   |
+|  11   | Reader        | ~/Desktop/OTF/otf-reader/cmd/otf-reader/otf-reader                            | --folder=~/Desktop/OTF/otf-hub/in/brightpath --config=./bp_config.json        |   2   |  true   |
+|  12   | Reader        | ~/Desktop/OTF/otf-reader/cmd/otf-reader/otf-reader                            | --folder=~/Desktop/OTF/otf-hub/in/maps/level --config=./levelMaps_config.json |   2   |  true   |
+|  13   | Reader        | ~/Desktop/OTF/otf-reader/cmd/otf-reader/otf-reader                            | --folder=~/Desktop/OTF/otf-hub/in/maps/align --config=./alignMaps_config.json |   2   |  true   |

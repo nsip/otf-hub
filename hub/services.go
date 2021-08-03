@@ -16,27 +16,56 @@ import (
 
 // table header order
 const (
-	iExePath = iota
-	iArgs
-	iDelay
-	iAPI
-	iRedir
-	iMethod
-	iEnable
+	iNo      = iota // service number
+	iService        // service name
+	iExePath        // executable path
+	iArgs           // executable starting arguments
+	iDelay          // start & exit delay second
+	iEnabled        // enable this executable ?
 )
 
 var (
-	qExePath      = make([]string, 0) // server may be repeated
-	qExeArgs      = make([]string, 0)
-	qDelay        = make([]struct{ s, e int }, 0)
-	mutex         = &sync.Mutex{}
-	qPid          = make([]int, 0)
-	mApiReDirGET  = make(map[string]string)
-	mApiReDirPOST = make(map[string]string)
+	qExePath = make([]string, 0) // server may be repeated
+	qExeArgs = make([]string, 0)
+	qDelay   = make([]struct{ s, e int }, 0)
+	mutex    = &sync.Mutex{}
+	qPid     = make([]int, 0)
 )
 
 func at(items []string, i int) string {
-	return envValued(sTrim(items[i], " \t"), nil) // use environment variables
+	value := sTrim(items[i], " \t")
+	parts := []string{}
+	for _, part := range sSplit(value, " ") {
+
+		// "a=~/path/to"
+		kv := []string{}
+		for i, seg := range sSplit(part, "=") {
+			if i == 1 {
+				if sHasPrefix(seg, "~/") {
+					abspath, err := fd.AbsPath(seg, false)
+					if err != nil {
+						panic("args has invalid set path value")
+					}
+					kv = append(kv, abspath)
+					break
+				}
+			}
+			kv = append(kv, seg)
+		}
+		part = sJoin(kv, "=")
+
+		// "~/path/to"
+		if sHasPrefix(part, "~/") {
+			abspath, err := fd.AbsPath(part, true)
+			if err != nil {
+				panic("args has invalid path")
+			}
+			part = abspath
+		}
+
+		parts = append(parts, part)
+	}
+	return sJoin(parts, " ")
 }
 
 func str2delay(s string) struct{ s, e int } {
@@ -81,20 +110,17 @@ func loadSvrTable(svrTblFile, varDefFile string) {
 		}
 
 		ss := sSplit(sTrim(ln, "|"), "|") // remove markdown table left & right '|', then split by '|'
-		failOnErrWhen(len(ss) != 7, "%v", "services.md table must have 7 columns, check it")
+		failOnErrWhen(len(ss) != 6, "%v", fEf("services.md table must have 6 columns, check it"))
 
 		// only deal with [ENABLE-true] rows
-		if at(ss, iEnable) != "true" {
+		if at(ss, iEnabled) != "true" {
 			return false, ""
 		}
 
 		var (
-			exe    = at(ss, iExePath)
-			args   = at(ss, iArgs)
-			delay  = at(ss, iDelay)
-			api    = at(ss, iAPI)
-			reDir  = at(ss, iRedir)
-			method = at(ss, iMethod)
+			exe   = at(ss, iExePath)
+			args  = at(ss, iArgs)
+			delay = at(ss, iDelay)
 		)
 
 		if exe != "" {
@@ -107,23 +133,6 @@ func loadSvrTable(svrTblFile, varDefFile string) {
 
 		// validate qExePath (already done)
 		// failOnErrWhen(!io.FilesAllExist(qExePath), "%v", fEf("Not All Executables Are In Valid Path"))
-
-		if api != "" {
-			reDir = sTrimLeft(reDir, "<")
-			reDir = sTrimRight(reDir, ">")
-			if sHasPrefix(reDir, ":") {
-				reDir = "http://localhost" + reDir
-			}
-
-			switch method {
-			case "GET":
-				mApiReDirGET[api] = reDir
-			case "POST":
-				mApiReDirPOST[api] = reDir
-			default:
-				failOnErr("%v", fEf("At present, only [GET POST] are supported, check mark-down service table"))
-			}
-		}
 
 		return true, ""
 

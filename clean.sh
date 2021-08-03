@@ -9,5 +9,6 @@ for f in $(find ./ -name '*.log' -or -name '*.doc'); do rm $f; done
 rm -f ./hub/hub
 rm -rf ./hub/log ./hub/services_log
 rm -rf ./otfdata ./sh/otfdata
+rm -rf ./in ./audit ./result
 
 rm -r /home/qmiao/Desktop/OTF/n3-web/server/n3w/contexts

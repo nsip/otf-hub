@@ -24,6 +24,8 @@ var (
 	sSplitN       = strings.SplitN
 	sHasPrefix    = strings.HasPrefix
 	sHasSuffix    = strings.HasSuffix
+	sContains     = strings.Contains
+	sJoin         = strings.Join
 	failOnErr     = lk.FailOnErr
 	failOnErrWhen = lk.FailOnErrWhen
 	warnOnErr     = lk.WarnOnErr

@@ -3,9 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -48,7 +46,7 @@ func main() {
 	go asyncExitListener()
 
 	launched := make(chan struct{})
-	go LaunchServices("./services.md", "./otf-run.sh", false, launched)
+	go LaunchServices("./services4.md", "./otf-run.sh", false, launched)
 	<-launched
 
 	fPln("<--------------- 'exit' or 'quit' to end hub --------------->")
@@ -100,57 +98,5 @@ func HostHTTPAsync(sig <-chan os.Signal, done chan<- string) {
 
 	defer e.Start(fSf(":%d", PORT))
 	// logGrp.Do("Echo Service is Starting ...")
-
-	// ------------------------------------------------------------------------------------ //
-
-	routeFun := func(method, api, reDir string) func(c echo.Context) error {
-		return func(c echo.Context) (err error) {
-			var (
-				status = http.StatusOK
-				resp   *http.Response
-				ret    []byte
-			)
-
-			if ok, paramstr := urlParamStr(c.QueryParams()); ok {
-				reDir += "?" + paramstr
-			}
-
-			switch method {
-			case "GET":
-				resp, err = http.Get(reDir)
-			case "POST":
-				resp, err = http.Post(reDir, "application/json", c.Request().Body)
-			default:
-				panic("Currently, Only Support [GET POST]")
-			}
-
-			if err != nil {
-				ret = []byte(err.Error())
-				status = http.StatusInternalServerError
-				goto ERR_RET
-			}
-			if ret, err = io.ReadAll(resp.Body); err != nil {
-				ret = []byte(err.Error())
-				status = http.StatusInternalServerError
-				goto ERR_RET
-			}
-
-		ERR_RET:
-			retstr := ""
-			for _, m := range modifiers {
-				retstr = m.ModifyRet(api, string(ret))
-			}
-
-			return c.String(status, retstr) // If already JSON String, so return String
-		}
-	}
-
-	for api, reDir := range mApiReDirGET {
-		e.GET(api, routeFun("GET", api, reDir))
-	}
-
-	for api, reDir := range mApiReDirPOST {
-		e.POST(api, routeFun("POST", api, reDir))
-	}
 
 }
